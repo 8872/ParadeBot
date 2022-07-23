@@ -14,8 +14,11 @@ public class ParadeTeleOp extends LinearOpMode{
        frontRightMotor = hardwareMap.dcMotor.get("rightFront");
        rearRightMotor = hardwareMap.dcMotor.get("rightRear");
 
-       frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+       frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
        rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+       frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+       rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
        telemetry.addData("Status", "Initialized");
        telemetry.update();
@@ -41,10 +44,10 @@ public class ParadeTeleOp extends LinearOpMode{
            frontRightMotor.setPower(frontRightPower);
            rearRightMotor.setPower(rearRightPower);
 
-           telemetry.addData("FrontLeftPower",frontLeftPower);
-           telemetry.addData("RearLeftPower",rearLeftPower);
-           telemetry.addData("FrontRightPower",frontRightPower);
-           telemetry.addData("RearRightPower",rearRightPower);
+           telemetry.addData("FrontLeftPower",frontLeftMotor.getPower());
+           telemetry.addData("RearLeftPower",rearLeftMotor.getPower());
+           telemetry.addData("FrontRightPower",frontRightMotor.getPower());
+           telemetry.addData("RearRightPower",rearRightMotor.getPower());
            telemetry.update();
        }
    }
