@@ -6,19 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class ParadeTeleOp extends LinearOpMode{
-   private DcMotor frontLeftMotor,rearLeftMotor,frontRightMotor,rearRightMotor;
+   private DcMotor left, right;
 
    public void runOpMode() {
-       frontLeftMotor = hardwareMap.dcMotor.get("leftFront");
-       rearLeftMotor = hardwareMap.dcMotor.get("leftRear");
-       frontRightMotor = hardwareMap.dcMotor.get("rightFront");
-       rearRightMotor = hardwareMap.dcMotor.get("rightRear");
+       left = hardwareMap.dcMotor.get("left");
+       right = hardwareMap.dcMotor.get("right");
 
-       frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-       rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-       frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-       rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-
+       right.setDirection(DcMotorSimple.Direction.REVERSE);
 
        telemetry.addData("Status", "Initialized");
        telemetry.update();
@@ -26,28 +20,14 @@ public class ParadeTeleOp extends LinearOpMode{
        waitForStart();
 
        while (opModeIsActive()) {
-           double frontLeftPower,rearLeftPower,frontRightPower,rearRightPower;
-           double y = -gamepad1.left_stick_y;
-           double x = gamepad1.right_stick_x;
+           double leftPower = -gamepad1.left_stick_y;
+           double rightPower = -gamepad1.right_stick_y;
 
-           double denominator = Math.max(Math.abs(x) + Math.abs(y), 1);
+           left.setPower(leftPower);
+           right.setPower(rightPower);
 
-           if(y<-0.15) x = -x;
-
-           frontLeftPower = (y + x) / denominator;
-           rearLeftPower = (y + x) / denominator;
-           frontRightPower = (y - x) / denominator;
-           rearRightPower = (y - x) / denominator;
-
-           frontLeftMotor.setPower(frontLeftPower);
-           rearLeftMotor.setPower(rearLeftPower);
-           frontRightMotor.setPower(frontRightPower);
-           rearRightMotor.setPower(rearRightPower);
-
-           telemetry.addData("FrontLeftPower",frontLeftMotor.getPower());
-           telemetry.addData("RearLeftPower",rearLeftMotor.getPower());
-           telemetry.addData("FrontRightPower",frontRightMotor.getPower());
-           telemetry.addData("RearRightPower",rearRightMotor.getPower());
+           telemetry.addData("left: ",left.getPower());
+           telemetry.addData("right: ",right.getPower());
            telemetry.update();
        }
    }
