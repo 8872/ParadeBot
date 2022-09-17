@@ -6,28 +6,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class ArmTest extends LinearOpMode{
     private DcMotor arm;
-    boolean armRunning = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        arm = hardwareMap.dcMotor.get("arm");
+        arm = hardwareMap.dcMotor.get("hand_motor");
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        double power = 0.5;
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
         while(opModeIsActive()){
-            if(gamepad1.b) armRunning = true;
-            if(gamepad1.x) armRunning = false;
-            if(!armRunning){
-                if(gamepad1.dpad_right) arm.setPower(0.5);
-                if(gamepad1.dpad_left) arm.setPower(-0.5);
-                if(!gamepad1.dpad_right && !gamepad1.dpad_left) arm.setPower(0);
-                if(gamepad1.a) power -= 0.005;
-                if(gamepad1.y) power += 0.005;
-            }
-            if(armRunning){
-                //if(gamepad1.)
+            telemetry.addData("position", arm.getCurrentPosition());
+            telemetry.update();
+            if(!arm.isBusy()){
+                if(arm.getCurrentPosition() > 0){
+                    arm.setTargetPosition(-800);
+                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }else{
+                    arm.setTargetPosition(800);
+                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
             }
         }
     }
