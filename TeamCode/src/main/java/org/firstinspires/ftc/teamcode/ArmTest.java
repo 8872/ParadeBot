@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class ArmTest extends LinearOpMode{
     private DcMotor arm;
+    private boolean auto = false;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,17 +18,36 @@ public class ArmTest extends LinearOpMode{
 
         waitForStart();
         while(opModeIsActive()){
+            telemetry.addData("runmode", auto);
             telemetry.addData("position", arm.getCurrentPosition());
-            telemetry.update();
-            if(!arm.isBusy()){
-                if(arm.getCurrentPosition() > 0){
-                    arm.setTargetPosition(-800);
-                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }else{
-                    arm.setTargetPosition(800);
-                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
+            if(gamepad1.a){
+                auto = !auto;
             }
+            if(auto == true){
+                arm.setPower(-0.5);
+                sleep(1000);
+                arm.setPower(0.5);
+                sleep(1000);
+                /*
+                telemetry.addData("position", arm.getCurrentPosition());
+                if(!arm.isBusy()){
+                    if(arm.getCurrentPosition() > 0){
+                        arm.setTargetPosition(-800);
+                        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    }else{
+                        arm.setTargetPosition(800);
+                        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    }
+                }
+                 */
+
+            }else{
+                double power = -gamepad1.left_stick_y;
+                arm.setPower(power);
+                telemetry.addData("power", arm.getPower());
+            }
+            telemetry.update();
+
         }
     }
 }
