@@ -41,16 +41,26 @@ public class ParadeTeleOp extends LinearOpMode{
 
            if (!wavehand) {
                if (moveArmLeft) {
-                   //TODO move arm left
-                   //eg. arm.setPower(0.1);
+                   //TODO change values as nessesary after testing
+                   arm.setPower(0.1);
                }
                if (moveArmRight) {
-                   //TODO move arm right
+                   //TODO change values as nessesary after testing
+                   arm.setPower(-0.1);
                }
            }
 
-           //TODO do calculation that is required for the driving process
+           //TODO need to test this to make sure it works properly with the bot
+           double denominator = Math.max(Math.abs(leftStickY)+ Math.abs(leftStickX), 1);
+           double leftPower = (-leftStickY + leftStickX) / denominator;
+           double rightPower = (leftStickY + leftStickX) / denominator;
 
+           left.setPower(leftPower);
+           right.setPower(rightPower);
+
+           telemetry.addData("LeftMotor", leftPower);
+           telemetry.addData("RightMotor", rightPower);
+           telemetry.update();
 
 
            telemetry.addData("leftMotor: ",left.getPower());
