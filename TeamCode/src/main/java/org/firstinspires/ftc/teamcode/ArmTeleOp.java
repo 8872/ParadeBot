@@ -25,6 +25,16 @@ public class ArmTeleOp extends LinearOpMode {
             boolean moveArmLeft = gamepad1.left_bumper;
             boolean moveArmRight = gamepad1.right_bumper;
 
+            //resets encoder
+            if (gamepad1.x) {
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            //turns on or off the waveHand
+            if (gamepad1.y) {
+                wavehand = !wavehand;
+            }
+
+
             if (!wavehand) {
                 if (moveArmLeft) {
                     //TODO change values as nessesary after testing
