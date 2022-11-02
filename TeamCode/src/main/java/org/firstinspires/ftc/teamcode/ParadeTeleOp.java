@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class ParadeTeleOp extends LinearOpMode{
    private DcMotor left, right, arm;
    private boolean wavehand = false;
+   private double wavePow = 0.2;
 
    @Override
    public void runOpMode() {
@@ -18,6 +19,8 @@ public class ParadeTeleOp extends LinearOpMode{
 
        right.setDirection(DcMotorSimple.Direction.REVERSE);
        left.setDirection(DcMotorSimple.Direction.FORWARD);
+       arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
        telemetry.addData("Status", "Initialized");
        telemetry.update();
@@ -39,19 +42,37 @@ public class ParadeTeleOp extends LinearOpMode{
                wavehand = !wavehand;
            }
 
+           if(!arm.isBusy()) {
+               if (arm.getCurrentPosition() > 0) {
+                   arm.setTargetPosition(-800);
+                   arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+               } else {
+                   arm.setTargetPosition(800);
+                   arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+               }
+           }
+
+           //increase waving speed
+           if (gamepad1.dpad_up) {
+               wavePow += 0.1;
+           }
+           if (gamepad1.dpad_down) {
+               wavePow -= 0.1;
+           }
+
            if (!wavehand) {
                if (moveArmLeft) {
                    //TODO change values as nessesary after testing
-                   arm.setPower(0.1);
+                   arm.setPower(wavePow);
                }
                if (moveArmRight) {
                    //TODO change values as nessesary after testing
-                   arm.setPower(-0.1);
+                   arm.setPower(wavePow*-1);
                }
            }
 
            //TODO need to test this to make sure it works properly with the bot
-           double denominator = Math.max(Math.abs(leftStickY)+ Math.abs(leftStickX), 1);
+           double denominator = Math.max(Math.abs(leftStickY) + Math.abs(leftStickX), 1);
            double leftPower = (-leftStickY + leftStickX) / denominator;
            double rightPower = (leftStickY + leftStickX) / denominator;
 
