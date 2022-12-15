@@ -6,7 +6,7 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private MecanumDrive drive;
+    private final MecanumDrive drive;
 
     public DriveSubsystem (MotorEx Fl, MotorEx Fr, MotorEx Bl, MotorEx Br) {
         drive = new MecanumDrive(Fl, Fr, Bl, Br);
