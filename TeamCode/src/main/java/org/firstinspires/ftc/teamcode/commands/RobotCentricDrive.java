@@ -14,6 +14,7 @@ public class RobotCentricDrive extends CommandBase {
         this.strafeSpeed = strafeSpeed;
         this.forwardSpeed = forwardSpeed;
         this.turnSpeed = turnSpeed;
+        addRequirements(drive);
     }
 
     @Override

@@ -9,14 +9,14 @@ public class FieldCentricDrive extends CommandBase {
     private DriveSubsystem drive;
     private DoubleSupplier strafeSpeed, forwardSpeed, turnSpeed, gyroAngle;
 
-    public FieldCentricDrive(DriveSubsystem driveSubsystem, DoubleSupplier strafeSpeed,
+    public FieldCentricDrive(DriveSubsystem drive, DoubleSupplier strafeSpeed,
                                      DoubleSupplier forwardSpeed,DoubleSupplier turnSpeed, DoubleSupplier gyroAngle) {
-        this.drive = driveSubsystem;
+        this.drive = drive;
         this.strafeSpeed = strafeSpeed;
         this.forwardSpeed = forwardSpeed;
         this.turnSpeed = turnSpeed;
         this.gyroAngle = gyroAngle;
-        addRequirements(driveSubsystem);
+        addRequirements(drive);
     }
 
     @Override
